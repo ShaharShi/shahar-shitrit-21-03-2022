@@ -1,0 +1,8 @@
+.itemContainer {
+    min-width: 180px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.itemContainer:hover {
+    transform: scale(1.1) ;
+}

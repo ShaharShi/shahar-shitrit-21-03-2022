@@ -1,0 +1,10 @@
+.gridContainer {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+@media screen and (max-width: 460px) {
+    .gridContainer {
+        justify-content: center;
+    }
+}

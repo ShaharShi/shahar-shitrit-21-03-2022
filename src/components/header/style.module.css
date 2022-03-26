@@ -1,0 +1,14 @@
+.headerContainer {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-content: center;
+    height: var(--header-height);
+}
+
+@media screen and (max-width: 380px) {
+    .headerContainer {
+        grid-template-rows: 1fr 1fr;
+        grid-template-columns: 1fr;
+        justify-items: center;
+    }
+}

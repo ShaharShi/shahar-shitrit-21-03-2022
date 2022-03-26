@@ -1,0 +1,25 @@
+.gridContainer {
+    display: grid;
+    grid-template-areas: ". . . . .";
+    grid-template-rows: 1fr;
+    grid-gap: 10px;
+}
+
+@media screen and (max-width: 1400px) and (min-height: 1000px) {
+    .gridContainer {
+        grid-template-rows: 1fr 1fr;
+        grid-template-areas: ". . ";
+    }
+}
+@media screen and (max-width: 850px) {
+    .gridContainer {
+        grid-template-rows: 1fr 1fr;
+        grid-template-areas: ". . .";
+    }
+}
+@media screen and (max-width: 500px) {
+    .gridContainer {
+        grid-template-rows: 1fr 1fr;
+        grid-template-areas: ".";
+    }
+}

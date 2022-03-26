@@ -1,0 +1,27 @@
+.searchBarContainer {
+    display: flex;
+    justify-content: center;
+    width: 40%;
+    margin: 40px auto;
+}
+.searchBarContainer > div {
+    display: flex;
+    width: 100%;
+    border-radius: 5px;
+}
+.searchInput {
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+}
+.searchInput::placeholder {
+    text-align: center;
+}
+
+@media screen and (max-width: 550px) {
+    .searchBarContainer {
+        width: 80%;
+    }
+}

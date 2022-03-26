@@ -1,0 +1,14 @@
+.itemContainer {
+    border-radius: 5px;
+    padding: 10px;
+}
+@media screen and (min-width: 1200px)  {
+    .itemContainer {
+        font-size: 1.3rem;
+    }
+}
+@media screen and (min-width: 1400px)  {
+    .itemContainer {
+        font-size: 1.8rem;
+    }
+}
