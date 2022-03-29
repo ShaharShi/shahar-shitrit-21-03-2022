@@ -4,12 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import CurrentLocation from '../../components/current-location';
 import SearchBar from '../../components/search-bar';
 import { weatherService } from '../../services/weather.service';
-import { onChangeCurrentLocation, onChangeCurrentWeeklyForecast } from '../../store/weather/weather.actions';
+import { onChangeCurrentLocation } from '../../store/weather/weather.actions';
 import styles from './style.module.css';
 
 export default function WeatherPage () {
     const currentLocation = useSelector((state: IState) => state.weatherState.currentLocation)
-    const isMetricUnitPreferred = useSelector((state: IState) => state.weatherState.isMetricUnitPreferred)
     const [termLocations, setTermLocations] = useState<IPartialLocation[]>([])
     const dispatch = useDispatch()
 

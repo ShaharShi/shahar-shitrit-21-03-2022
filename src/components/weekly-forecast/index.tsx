@@ -7,9 +7,7 @@ import DailyForecastItem from '../daily-forecast-item';
 import styles from './style.module.css'
 
 export default function WeeklyForecast() {
-    const currentLocation = useSelector((state: IState) => state.weatherState.currentLocation)
-    const currentWeeklyForecast = useSelector((state: IState) => state.weatherState.currentWeeklyForecast)
-    const isMetricUnitPreferred = useSelector((state: IState) => state.weatherState.isMetricUnitPreferred)
+    const { currentLocation, currentWeeklyForecast, isMetricUnitPreferred } = useSelector((state: IState) => state.weatherState)
     const dispatch = useDispatch()
 
     async function fetchLocationWeeklyForecast(locationId: string) {

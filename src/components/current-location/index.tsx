@@ -8,9 +8,7 @@ import toast from 'react-hot-toast';
 
 export default function CurrentLocation () {
     const [isFavorite, setIsFavorite] = useState(false)
-    const currentLocation = useSelector((state: IState) => state.weatherState.currentLocation)
-    const isMetricUnitPreferred = useSelector((state: IState) => state.weatherState.isMetricUnitPreferred)
-    const favorites = useSelector((state: IState) => state.weatherState.favorites)
+    const { currentLocation, isMetricUnitPreferred, favorites } = useSelector((state: IState) => state.weatherState)
     const isDarkMode = useSelector((state: IState) => state.themeState.isDarkMode)
     const dispatch = useDispatch()
 
