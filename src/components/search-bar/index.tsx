@@ -14,17 +14,16 @@ export default function SearchBar (props: ISearchBar) {
     const [searchTerm, setSearchTerm] = useState('')
     const [hintData, setHintData] = useState<string[]>([])
 
-    useEffect(() => {
-        const { termLocations } = props;
-        const hintArr: string[] = termLocations.map((t: IPartialLocation) => t.locationName);
-        setHintData(hintArr)
-    }, [props.termLocations])
+    const delaySearch = () => setTimeout(() => props.searchLocations(searchTerm), 300);
 
+    function setHints() {
+        const hintArr: string[] = props.termLocations.map((t: IPartialLocation) => t.locationName);
+        setHintData(hintArr)
+    }
+
+    useEffect(() => setHints(), [props.termLocations])
     useEffect(() => {
-        const { searchLocations } = props;
-        const delayDebounceTimeout = setTimeout(() => {
-            searchLocations(searchTerm)
-        }, 300)
+        const delayDebounceTimeout = delaySearch()
         return () => clearTimeout(delayDebounceTimeout)
       }, [searchTerm])
     return (

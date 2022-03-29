@@ -39,14 +39,7 @@ export default function WeatherPage () {
         }
         dispatch(onChangeCurrentLocation(location))
     }
-    async function fetchLocationWeeklyForecast(locationId: string) {
-        if (!locationId) return toast('There are no results for this term, try to search again ... ');
 
-        const weeklyForecastResult = await weatherService.fetchWeeklyForecast(locationId, isMetricUnitPreferred);
-        if (!weeklyForecastResult.result) return toast('There are no results for this term, try to search again ... ');
-
-        dispatch(onChangeCurrentWeeklyForecast(weeklyForecastResult.result.weeklyForecast))
-    }
     function initialDefaultLocation() {
         navigator.geolocation.getCurrentPosition(_success, _failure);
         
@@ -70,7 +63,7 @@ export default function WeatherPage () {
             <div>
                 <SearchBar termLocations={termLocations} searchLocations={searchLocations}/>
             </div>
-            <CurrentLocation fetchLocationWeeklyForecast={fetchLocationWeeklyForecast}/>
+            <CurrentLocation />
         </div>
     )
 }

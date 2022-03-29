@@ -5,12 +5,8 @@ import WeeklyForecast from '../weekly-forecast';
 import styles from './style.module.css'
 import { AiFillLike, AiOutlineLike } from 'react-icons/ai';
 import toast from 'react-hot-toast';
- 
-interface ICurrentLocation {
-    fetchLocationWeeklyForecast: Function;
-}
 
-export default function CurrentLocation ({ fetchLocationWeeklyForecast }: ICurrentLocation) {
+export default function CurrentLocation () {
     const [isFavorite, setIsFavorite] = useState(false)
     const currentLocation = useSelector((state: IState) => state.weatherState.currentLocation)
     const isMetricUnitPreferred = useSelector((state: IState) => state.weatherState.isMetricUnitPreferred)
@@ -62,7 +58,7 @@ export default function CurrentLocation ({ fetchLocationWeeklyForecast }: ICurre
                <div className={`${styles.middleWrapper}`}>
                    <p>{ currentLocation.condition }</p>
                </div>
-               <WeeklyForecast fetchLocationWeeklyForecast={fetchLocationWeeklyForecast}/>
+               <WeeklyForecast />
             </div>
             :
             <div className='d-flex justify-content-center align-items-center w-100'>
