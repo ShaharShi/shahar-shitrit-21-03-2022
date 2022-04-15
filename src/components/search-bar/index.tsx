@@ -7,10 +7,11 @@ import { IoIosSearch } from 'react-icons/io'
 interface ISearchBar {
     termLocations: IPartialLocation[];
     searchLocations: Function;
+    fetchLocationInfo: Function;
 }
 
 export default function SearchBar (props: ISearchBar) {
-    const isDarkMode = useSelector((statae: IState) => statae.themeState.isDarkMode)
+    const isDarkMode = useSelector((state: IState) => state.themeState.isDarkMode)
     const [searchTerm, setSearchTerm] = useState('')
     const [hintData, setHintData] = useState<string[]>([])
 

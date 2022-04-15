@@ -12,6 +12,7 @@ export const weatherService = {
                     q: term
                 }
             })
+            console.log(locationResult);
             if (!locationResult) throw new Error(`There is no result with the given term - "${term}"`);
             return { 
                 result: locationResult.map((loc: any) => ({
@@ -79,6 +80,7 @@ export const weatherService = {
             if (!geoPosition) throw new Error(`Could'nt get search result due to unknown error, please refresh the page and try again !`);
             return {
                 result: {
+                    id: geoPosition.Key,
                     locationName: geoPosition.LocalizedName
                 },
                 isError: false

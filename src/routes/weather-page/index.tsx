@@ -47,7 +47,7 @@ export default function WeatherPage () {
             const geoPositionResult = await weatherService.fetchLocationByGeoPosition(position.coords.latitude, position.coords.longitude);
             if (!geoPositionResult.result || geoPositionResult.isError) return toast(geoPositionResult.message);
             
-            searchLocations(geoPositionResult.result.locationName);
+            fetchLocationInfo(geoPositionResult.result);
         }
         async function _failure() {
             searchLocations('tel aviv', true);
@@ -60,7 +60,7 @@ export default function WeatherPage () {
     return (
         <div className={`${styles.pageContainer} page-height`}>
             <div>
-                <SearchBar termLocations={termLocations} searchLocations={searchLocations}/>
+                <SearchBar termLocations={termLocations} fetchLocationInfo={fetchLocationInfo} searchLocations={searchLocations}/>
             </div>
             <CurrentLocation />
         </div>
