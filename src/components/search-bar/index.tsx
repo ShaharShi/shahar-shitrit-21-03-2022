@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react';
-import { Hint } from 'react-autocomplete-hint';
+import { createRef, SyntheticEvent, useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import styles from './style.module.css'
 import { IoIosSearch } from 'react-icons/io'
@@ -7,35 +6,44 @@ import { IoIosSearch } from 'react-icons/io'
 interface ISearchBar {
     termLocations: IPartialLocation[];
     searchLocations: Function;
-    fetchLocationInfo: Function;
+    setLocation: Function;
 }
 
 export default function SearchBar (props: ISearchBar) {
     const isDarkMode = useSelector((state: IState) => state.themeState.isDarkMode)
     const [searchTerm, setSearchTerm] = useState('')
-    const [hintData, setHintData] = useState<string[]>([])
+    const [citiesComplete, setCitiesComplete] = useState<IPartialLocation[]>([])
 
-    const delaySearch = () => setTimeout(() => props.searchLocations(searchTerm), 300);
+    const delaySearch = () => setTimeout(() => props.searchLocations(searchTerm), 500);
 
-    function setHints() {
-        const hintArr: string[] = props.termLocations.map((t: IPartialLocation) => t.locationName);
-        setHintData(hintArr)
+    function setCities() {
+        const citiesArr: IPartialLocation[] = props.termLocations;
+        setCitiesComplete(citiesArr)
     }
-
-    useEffect(() => setHints(), [props.termLocations])
+    function handleClick(e: any) {
+        const { setLocation } = props;
+    }
+    useEffect(() => setCities(), [props.termLocations])
     useEffect(() => {
+        if (!searchTerm.length) return setCitiesComplete([]);
+
         const delayDebounceTimeout = delaySearch()
         return () => clearTimeout(delayDebounceTimeout)
       }, [searchTerm])
     return (
         <div className={styles.searchBarContainer}>
-            <div className={`${isDarkMode ? 'background-dark text-light box-shadow-dark' : 'background-light text-dark box-shadow-light'}`}>
-                <div className='d-flex align-items-center border-end px-2 me-2'><IoIosSearch size={40}/></div>
+            <div className={`w-75 ${isDarkMode ? 'background-dark text-light box-shadow-dark' : 'background-light text-dark box-shadow-light'}`}>
                 <div className='flex-grow-1'>
-                    <Hint options={hintData} allowTabFill>
-                        <input type='text' className={`${styles.searchInput} ${isDarkMode ? 'text-light' : 'text-dark'}`} list={'cities'} name={'term'} onChange={(e) => setSearchTerm(e.target.value)} placeholder={'Search for a location ...'}/>
-                    </Hint>
+                    <input type='text' className={`${styles.searchInput} ${isDarkMode ? 'text-light' : 'text-dark'}`} onChange={(e) => setSearchTerm(e.target.value)} list={'cities'} name={'term'} placeholder={'Search for a location ...'}/>
+                    <datalist id={'cities'}>
+                        { citiesComplete.map(city => <option data-value={city.id} key={city.id}>{ city.locationName }</option>)}
+                    </datalist>
                 </div>
+            </div>
+            <div className={`w-25 d-flex justify-content-center align-items-center mx-4 ${isDarkMode ? 'background-dark text-light box-shadow-dark' : 'background-light text-dark box-shadow-light'}`}>
+                <button className={styles.searchBtn} onClick={handleClick}>
+                    <IoIosSearch size={40}/>
+                </button>
             </div>
         </div>
     )

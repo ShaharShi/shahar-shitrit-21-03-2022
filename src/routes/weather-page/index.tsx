@@ -12,19 +12,19 @@ export default function WeatherPage () {
     const [termLocations, setTermLocations] = useState<IPartialLocation[]>([])
     const dispatch = useDispatch()
 
-    async function searchLocations(term: string, getDefaultLocation?: boolean) {
+    async function searchLocations(term: string) {
         if (!term || !term.length) return;
-        const locationsResult = await weatherService.fetchLocation(term);
+        weatherService.fetchLocation(term).then(locationsResult => {
 
-        if (locationsResult.message && locationsResult.isError) return toast(locationsResult.message);
-        if (locationsResult.result && getDefaultLocation) await fetchLocationInfo(locationsResult.result[0])
-        else if (locationsResult.result && !getDefaultLocation) {
-            if (!locationsResult.result.length) return toast.error(`There isn't a location with the given term - "${term}"`)
-            setTermLocations(locationsResult.result as IPartialLocation[]);
-            fetchLocationInfo(locationsResult.result[0])
-        }
+            if (locationsResult.message && locationsResult.isError) return toast(locationsResult.message);
+            else if (locationsResult.result) {
+                if (!locationsResult.result.length) return toast.error(`There isn't a location with the given term - "${term}"`)
+                setTermLocations(locationsResult.result as IPartialLocation[]);
+            }
+        });
+
     }
-    async function fetchLocationInfo(partialLocation: IPartialLocation) {
+    async function setLocation(partialLocation: IPartialLocation) {
         if (!partialLocation) return toast('There are no results for this term, try to search again ... ');
 
         const conditionResult = await weatherService.fetchLocationConditions(partialLocation.id);
@@ -47,10 +47,10 @@ export default function WeatherPage () {
             const geoPositionResult = await weatherService.fetchLocationByGeoPosition(position.coords.latitude, position.coords.longitude);
             if (!geoPositionResult.result || geoPositionResult.isError) return toast(geoPositionResult.message);
             
-            fetchLocationInfo(geoPositionResult.result);
+            setLocation(geoPositionResult.result);
         }
         async function _failure() {
-            searchLocations('tel aviv', true);
+            setLocation({ locationName: 'Tel Aviv', id: "215854" });
         }
     }
 
@@ -60,7 +60,7 @@ export default function WeatherPage () {
     return (
         <div className={`${styles.pageContainer} page-height`}>
             <div>
-                <SearchBar termLocations={termLocations} fetchLocationInfo={fetchLocationInfo} searchLocations={searchLocations}/>
+                <SearchBar termLocations={termLocations} setLocation={setLocation} searchLocations={searchLocations}/>
             </div>
             <CurrentLocation />
         </div>

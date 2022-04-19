@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { CancelTokenSource } from "axios";
 
 const BASR_URL = process.env.REACT_APP_BASR_URL ? process.env.REACT_APP_BASR_URL : 'http://dataservice.accuweather.com';
 const API_KEY = process.env.REACT_APP_API_KEY;
