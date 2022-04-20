@@ -27,27 +27,29 @@ export default function WeatherPage () {
     async function setLocation(partialLocation: IPartialLocation) {
         if (!partialLocation) return toast('There are no results for this term, try to search again ... ');
 
-        const conditionResult = await weatherService.fetchLocationConditions(partialLocation.id);
-        if (!conditionResult.result || conditionResult.isError) return toast(conditionResult.message);
-
-        const location: ILocation = {
-            id: partialLocation.id,
-            locationName: partialLocation.locationName,
-            temperature: conditionResult.result.temperature,
-            condition: conditionResult.result.condition,
-        }
-        dispatch(onChangeCurrentLocation(location))
+        weatherService.fetchLocationConditions(partialLocation.id).then((conditionResult) => {
+            if (!conditionResult.result || conditionResult.isError) return toast(conditionResult.message);
+    
+            const location: ILocation = {
+                id: partialLocation.id,
+                locationName: partialLocation.locationName,
+                temperature: conditionResult.result.temperature,
+                condition: conditionResult.result.condition,
+            }
+            dispatch(onChangeCurrentLocation(location))
+        });
     }
 
     function initialDefaultLocation() {
+        if (currentLocation) return;
         navigator.geolocation.getCurrentPosition(_success, _failure);
         
         async function _success(position: GeolocationPosition) {
-            if (currentLocation) return;
-            const geoPositionResult = await weatherService.fetchLocationByGeoPosition(position.coords.latitude, position.coords.longitude);
-            if (!geoPositionResult.result || geoPositionResult.isError) return toast(geoPositionResult.message);
-            
-            setLocation(geoPositionResult.result);
+            weatherService.fetchLocationByGeoPosition(position.coords.latitude, position.coords.longitude).then((geoPositionResult) => {
+                if (!geoPositionResult.result || geoPositionResult.isError) return toast(geoPositionResult.message);
+                
+                setLocation(geoPositionResult.result);
+            });
         }
         async function _failure() {
             setLocation({ locationName: 'Tel Aviv', id: "215854" });

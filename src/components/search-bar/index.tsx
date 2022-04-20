@@ -24,7 +24,7 @@ export default function SearchBar (props: ISearchBar) {
     useEffect(() => setCities(), [props.termLocations])
     useEffect(() => {
         if (!searchTerm.length) return setCitiesComplete([]);
-        const city = citiesComplete.find(c => c.locationName === searchTerm);
+        const city = citiesComplete.find(c => c.locationName.toLocaleLowerCase() === searchTerm.toLocaleLowerCase());
         if (city) return setCity(city)
 
         const delayDebounceTimeout = delaySearch()

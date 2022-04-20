@@ -18,7 +18,7 @@ export default function CurrentLocation () {
     }
     function removeFromFavorites() {
         if (!currentLocation) return toast('Could\'nt preform this action, please try refresh the page and try again !');
-        dispatch(onRemoveFromFavorites(currentLocation))
+        dispatch(onRemoveFromFavorites(favorites, currentLocation))
     }
 
     useEffect(() => {

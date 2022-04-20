@@ -1,4 +1,4 @@
-import axios, { CancelTokenSource } from "axios";
+import axios from "axios";
 
 const BASR_URL = process.env.REACT_APP_BASR_URL ? process.env.REACT_APP_BASR_URL : 'http://dataservice.accuweather.com';
 const API_KEY = process.env.REACT_APP_API_KEY;
@@ -12,7 +12,6 @@ export const weatherService = {
                     q: term
                 }
             })
-            console.log(locationResult);
             if (!locationResult) throw new Error(`There is no result with the given term - "${term}"`);
             return { 
                 result: locationResult.map((loc: any) => ({
