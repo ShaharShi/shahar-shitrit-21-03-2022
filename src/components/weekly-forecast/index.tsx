@@ -1,15 +1,23 @@
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import toast from 'react-hot-toast';
+import { useDispatch, useSelector } from 'react-redux';
+import { weatherService } from '../../services/weather.service';
+import { onChangeCurrentWeeklyForecast } from '../../store/weather/weather.actions';
 import DailyForecastItem from '../daily-forecast-item';
 import styles from './style.module.css'
 
-interface IWeeklyForecast {
-    fetchLocationWeeklyForecast: Function;
-}
-export default function WeeklyForecast({ fetchLocationWeeklyForecast }: IWeeklyForecast) {
-    const currentLocation = useSelector((state: IState) => state.weatherState.currentLocation)
-    const currentWeeklyForecast = useSelector((state: IState) => state.weatherState.currentWeeklyForecast)
-    const isMetricUnitPreferred = useSelector((state: IState) => state.weatherState.isMetricUnitPreferred)
+export default function WeeklyForecast() {
+    const { currentLocation, currentWeeklyForecast, isMetricUnitPreferred } = useSelector((state: IState) => state.weatherState)
+    const dispatch = useDispatch()
+
+    async function fetchLocationWeeklyForecast(locationId: string) {
+        if (!locationId) return toast('There are no results for this term, try to search again ... ');
+
+        const weeklyForecastResult = await weatherService.fetchWeeklyForecast(locationId, isMetricUnitPreferred);
+        if (!weeklyForecastResult.result) return toast('There are no results for this term, try to search again ... ');
+
+        dispatch(onChangeCurrentWeeklyForecast(weeklyForecastResult.result.weeklyForecast))
+    }
 
     useEffect(() => {
         if (!currentLocation) return;

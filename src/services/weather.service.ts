@@ -79,6 +79,7 @@ export const weatherService = {
             if (!geoPosition) throw new Error(`Could'nt get search result due to unknown error, please refresh the page and try again !`);
             return {
                 result: {
+                    id: geoPosition.Key,
                     locationName: geoPosition.LocalizedName
                 },
                 isError: false

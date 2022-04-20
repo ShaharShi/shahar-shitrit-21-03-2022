@@ -5,16 +5,10 @@ import WeeklyForecast from '../weekly-forecast';
 import styles from './style.module.css'
 import { AiFillLike, AiOutlineLike } from 'react-icons/ai';
 import toast from 'react-hot-toast';
- 
-interface ICurrentLocation {
-    fetchLocationWeeklyForecast: Function;
-}
 
-export default function CurrentLocation ({ fetchLocationWeeklyForecast }: ICurrentLocation) {
+export default function CurrentLocation () {
     const [isFavorite, setIsFavorite] = useState(false)
-    const currentLocation = useSelector((state: IState) => state.weatherState.currentLocation)
-    const isMetricUnitPreferred = useSelector((state: IState) => state.weatherState.isMetricUnitPreferred)
-    const favorites = useSelector((state: IState) => state.weatherState.favorites)
+    const { currentLocation, isMetricUnitPreferred, favorites } = useSelector((state: IState) => state.weatherState)
     const isDarkMode = useSelector((state: IState) => state.themeState.isDarkMode)
     const dispatch = useDispatch()
 
@@ -24,7 +18,7 @@ export default function CurrentLocation ({ fetchLocationWeeklyForecast }: ICurre
     }
     function removeFromFavorites() {
         if (!currentLocation) return toast('Could\'nt preform this action, please try refresh the page and try again !');
-        dispatch(onRemoveFromFavorites(currentLocation))
+        dispatch(onRemoveFromFavorites(favorites, currentLocation))
     }
 
     useEffect(() => {
@@ -62,7 +56,7 @@ export default function CurrentLocation ({ fetchLocationWeeklyForecast }: ICurre
                <div className={`${styles.middleWrapper}`}>
                    <p>{ currentLocation.condition }</p>
                </div>
-               <WeeklyForecast fetchLocationWeeklyForecast={fetchLocationWeeklyForecast}/>
+               <WeeklyForecast />
             </div>
             :
             <div className='d-flex justify-content-center align-items-center w-100'>

@@ -27,9 +27,9 @@ export const weatherReducer = (state: IWeatherState = initialState, action: IAct
             }
         }
         case 'REMOVE_FROM_FAVORITES' : {
-            const { payload: location } = action;
+            const { payload: filteredFavorites } = action;
             return {
-                ...state, favorites: state.favorites.filter(fav => fav.id !== location.id)
+                ...state, favorites: filteredFavorites
             }
         }
         case 'TOGGLE_UNIT' : {
