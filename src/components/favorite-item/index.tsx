@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
-import { onChangeCurrentLocation } from '../../store/weather/weather.actions';
+import { onChangeCurrentLocationSuccess } from '../../store/weather/weather.actions';
 import styles from './style.module.css'
 
 interface IFavoriteItem {
@@ -13,7 +13,7 @@ export default function FavoriteItem({ data }: IFavoriteItem) {
     const navigate = useNavigate()
     
     function handleClick() {
-        dispatch(onChangeCurrentLocation(data));
+        dispatch(onChangeCurrentLocationSuccess(data));
         navigate('/')
     }
     return (

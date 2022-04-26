@@ -1,4 +1,6 @@
 const initialState: IWeatherState = {
+    updateWeeklyForecast: false,
+    updateCurrentLocation: false,
     currentLocation: null,
     currentWeeklyForecast: [],
     favorites: [],
@@ -8,16 +10,36 @@ const initialState: IWeatherState = {
 export const weatherReducer = (state: IWeatherState = initialState, action: IAction) => {
 
     switch(action.type) {
-        case 'CHANGE_CURRENT_LOCATION' : {
-            const { payload } = action;
+        case 'CHANGE_CURRENT_LOCATION_START' : {
             return {
-                ...state, currentLocation: payload
+                ...state, updateCurrentLocation: true
             }
         }
-        case 'CHANGE_CURRENT_WEEKLY_FORECAST' : {
+        case 'CHANGE_CURRENT_LOCATION_SUCCESS' : {
             const { payload } = action;
             return {
-                ...state, currentWeeklyForecast: payload
+                ...state, currentLocation: payload, updateCurrentLocation: false
+            }
+        }
+        case 'CHANGE_CURRENT_LOCATION_FAIL' : {
+            return {
+                ...state, updateCurrentLocation: false
+            }
+        }
+        case 'CHANGE_CURRENT_WEEKLY_FORECAST_START' : {
+            return {
+                ...state, updateWeeklyForecast: true
+            }
+        }
+        case 'CHANGE_CURRENT_WEEKLY_FORECAST_SUCCESS' : {
+            const { payload } = action;
+            return {
+                ...state, currentWeeklyForecast: payload, updateWeeklyForecast: false
+            }
+        }
+        case 'CHANGE_CURRENT_WEEKLY_FORECAST_FAIL' : {
+            return {
+                ...state, updateWeeklyForecast: false
             }
         }
         case 'ADD_TO_FAVORITES' : {
