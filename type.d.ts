@@ -58,4 +58,11 @@ interface IDailyForecastTemperature {
     }
 }
 
+interface IWeatherService {
+    fetchLocation: Function;
+    fetchLocationConditions: Function;
+    fetchWeeklyForecast: Function;
+    fetchLocationByGeoPosition: Function;
+}
+
 type ErrorBase = Error | AxiosError;

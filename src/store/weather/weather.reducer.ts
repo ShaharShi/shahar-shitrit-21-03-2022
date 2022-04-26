@@ -21,15 +21,15 @@ export const weatherReducer = (state: IWeatherState = initialState, action: IAct
             }
         }
         case 'ADD_TO_FAVORITES' : {
-            const { payload: location } = action;
+            const { payload: favorites } = action;
             return {
-                ...state, favorites: [ ...state.favorites, location ]
+                ...state, favorites
             }
         }
         case 'REMOVE_FROM_FAVORITES' : {
-            const { payload: filteredFavorites } = action;
+            const { payload: favorites } = action;
             return {
-                ...state, favorites: filteredFavorites
+                ...state, favorites
             }
         }
         case 'TOGGLE_UNIT' : {

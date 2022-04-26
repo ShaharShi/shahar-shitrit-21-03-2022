@@ -1,10 +1,11 @@
+import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import CurrentLocation from '../../components/current-location';
 import SearchBar from '../../components/search-bar';
 import { weatherService } from '../../services/weather.service';
-import { onChangeCurrentLocation } from '../../store/weather/weather.actions';
+import { changeCurrentLocationAction } from '../../store/weather/weather.actions';
 import styles from './style.module.css';
 
 export default function WeatherPage () {
@@ -14,30 +15,24 @@ export default function WeatherPage () {
 
     async function searchLocations(term: string) {
         if (!term || !term.length) return;
-        weatherService.fetchLocation(term).then(locationsResult => {
-
-            if (locationsResult.message && locationsResult.isError) return toast(locationsResult.message);
-            else if (locationsResult.result) {
-                if (!locationsResult.result.length) return toast.error(`There isn't a location with the given term - "${term}"`)
-                setTermLocations(locationsResult.result as IPartialLocation[]);
-            }
+        
+        weatherService.fetchLocation(term).then(locationResult => {
+            const locations = locationResult.data.map((loc: any) => ({
+                id: loc.Key,
+                locationName: loc.LocalizedName,
+            }))
+            if (!locations.length) return toast.error(`There isn't a location with the given term - "${term}"`)
+            setTermLocations(locations as IPartialLocation[]);
+            
+        }).catch((err: AxiosError) => {
+            console.log(err.message);
+            toast(err.message)
         });
-
     }
     async function setLocation(partialLocation: IPartialLocation) {
         if (!partialLocation) return toast('There are no results for this term, try to search again ... ');
-
-        weatherService.fetchLocationConditions(partialLocation.id).then((conditionResult) => {
-            if (!conditionResult.result || conditionResult.isError) return toast(conditionResult.message);
-    
-            const location: ILocation = {
-                id: partialLocation.id,
-                locationName: partialLocation.locationName,
-                temperature: conditionResult.result.temperature,
-                condition: conditionResult.result.condition,
-            }
-            dispatch(onChangeCurrentLocation(location))
-        });
+        
+        dispatch(changeCurrentLocationAction(partialLocation))
     }
 
     function initialDefaultLocation() {
@@ -46,10 +41,9 @@ export default function WeatherPage () {
         
         async function _success(position: GeolocationPosition) {
             weatherService.fetchLocationByGeoPosition(position.coords.latitude, position.coords.longitude).then((geoPositionResult) => {
-                if (!geoPositionResult.result || geoPositionResult.isError) return toast(geoPositionResult.message);
                 
-                setLocation(geoPositionResult.result);
-            });
+                setLocation(geoPositionResult.data);
+            }).catch((err: AxiosError) => toast(err.message));
         }
         async function _failure() {
             setLocation({ locationName: 'Tel Aviv', id: "215854" });

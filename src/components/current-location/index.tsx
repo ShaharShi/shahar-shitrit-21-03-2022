@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { onAddToFavorites, onRemoveFromFavorites } from '../../store/weather/weather.actions';
 import WeeklyForecast from '../weekly-forecast';
 import styles from './style.module.css'
 import { AiFillLike, AiOutlineLike } from 'react-icons/ai';
 import toast from 'react-hot-toast';
+import { addToFavoritesAction, removeFromFavoritesAction } from '../../store/weather/weather.actions';
 
 export default function CurrentLocation () {
     const [isFavorite, setIsFavorite] = useState(false)
@@ -14,11 +14,11 @@ export default function CurrentLocation () {
 
     function addToFavorites() {
         if (!currentLocation) return toast('Could\'nt preform this action, please try refresh the page and try again !');
-        dispatch(onAddToFavorites(currentLocation))
+        dispatch(addToFavoritesAction(currentLocation))
     }
     function removeFromFavorites() {
         if (!currentLocation) return toast('Could\'nt preform this action, please try refresh the page and try again !');
-        dispatch(onRemoveFromFavorites(favorites, currentLocation))
+        dispatch(removeFromFavoritesAction(currentLocation))
     }
 
     useEffect(() => {
