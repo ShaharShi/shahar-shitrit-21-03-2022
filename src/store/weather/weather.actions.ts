@@ -24,7 +24,7 @@ export const changeCurrentLocationAction = (partialLocation: IPartialLocation) =
     dispatch(onChangeCurrentLocationStart())
     weatherService.fetchLocationConditions(partialLocation.id)
     .then((result: AxiosResponse) => {
-        if (!result.data.length) return dispatch(onChangeCurrentWeeklyForecastFail('Location doesn\'t found !')); //todo error handling
+        if (!result.data.length) return dispatch(onChangeCurrentWeeklyForecastFail('Location doesn\'t found !'));
         
         const location: ILocation = {
             id: partialLocation.id,
@@ -36,23 +36,21 @@ export const changeCurrentLocationAction = (partialLocation: IPartialLocation) =
     })
     .catch((err: AxiosError) => {
         dispatch(onChangeCurrentLocationFail(err.message))
-        console.log(err.message) 
-        alert(err.message) //todo error handling
+        console.log(err.message)
     });
 }
 export const changeCurrentWeeklyForecastAction = (locationId: string, isMetricUnitPreferred: boolean) => (dispatch: Dispatch, getState: Function, weatherService: IWeatherService) => {
     dispatch(onChangeCurrentWeeklyForecastStart())
     weatherService.fetchWeeklyForecast(locationId, isMetricUnitPreferred)
     .then((result: AxiosResponse) => {
-        if (!result.data) return dispatch(onChangeCurrentWeeklyForecastFail('There are no results for this term, try to search again ... ')); //todo error handling
+        if (!result.data) return dispatch(onChangeCurrentWeeklyForecastFail('There are no results for this term, try to search again ... '));
         
         const weeklyForecastArr: IDailyForecast[] = result.data.DailyForecasts.map((item: any) => ({ timestamp: item.Date, temperature: item.Temperature }))
         dispatch(onChangeCurrentWeeklyForecastSuccess(weeklyForecastArr))
     })
     .catch((err: AxiosError) => {
         dispatch(onChangeCurrentWeeklyForecastFail(err.message))
-        console.log(err.message) 
-        alert(err.message) //todo error handling
+        console.log(err.message)
     });;
 }
 export const addToFavoritesAction = (location: ILocation) => (dispatch: Dispatch, getState: Function) => {

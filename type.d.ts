@@ -3,11 +3,12 @@ interface IState {
     themeState: IThemeState;
 }
 interface IWeatherState {
-    updateWeeklyForecast: boolean;
-    updateCurrentLocation: boolean;
     currentLocation: ILocation | null;
     currentWeeklyForecast: IDailyForecast[];
     favorites: ILocation[];
+    message: string;
+    updateWeeklyForecast: boolean;
+    updateCurrentLocation: boolean;
     isMetricUnitPreferred: boolean;
 }
 

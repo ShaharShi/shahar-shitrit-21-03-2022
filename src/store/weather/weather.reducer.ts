@@ -1,9 +1,10 @@
 const initialState: IWeatherState = {
-    updateWeeklyForecast: false,
-    updateCurrentLocation: false,
     currentLocation: null,
     currentWeeklyForecast: [],
     favorites: [],
+    message: '',
+    updateWeeklyForecast: false,
+    updateCurrentLocation: false,
     isMetricUnitPreferred: true
 }
 
@@ -22,8 +23,9 @@ export const weatherReducer = (state: IWeatherState = initialState, action: IAct
             }
         }
         case 'CHANGE_CURRENT_LOCATION_FAIL' : {
+            const { payload } = action;
             return {
-                ...state, updateCurrentLocation: false
+                ...state, updateCurrentLocation: false, message: payload
             }
         }
         case 'CHANGE_CURRENT_WEEKLY_FORECAST_START' : {
@@ -38,8 +40,9 @@ export const weatherReducer = (state: IWeatherState = initialState, action: IAct
             }
         }
         case 'CHANGE_CURRENT_WEEKLY_FORECAST_FAIL' : {
+            const { payload } = action;
             return {
-                ...state, updateWeeklyForecast: false
+                ...state, updateWeeklyForecast: false, message: payload
             }
         }
         case 'ADD_TO_FAVORITES' : {

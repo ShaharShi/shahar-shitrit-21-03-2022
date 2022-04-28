@@ -8,7 +8,7 @@ import { addToFavoritesAction, removeFromFavoritesAction } from '../../store/wea
 
 export default function CurrentLocation () {
     const [isFavorite, setIsFavorite] = useState(false)
-    const { currentLocation, isMetricUnitPreferred, favorites } = useSelector((state: IState) => state.weatherState)
+    const { currentLocation, isMetricUnitPreferred, favorites, updateCurrentLocation } = useSelector((state: IState) => state.weatherState)
     const isDarkMode = useSelector((state: IState) => state.themeState.isDarkMode)
     const dispatch = useDispatch()
 
@@ -60,9 +60,15 @@ export default function CurrentLocation () {
             </div>
             :
             <div className='d-flex justify-content-center align-items-center w-100'>
+                { updateCurrentLocation ? 
+                <div className={`spinner-border ${isDarkMode ? 'text-light' : 'text-dark'}`} style={{width: '3rem', height: '3rem'}} role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </div>
+                :
                 <p className='fw-bold'>
                     There is'nt a location to watch, please try to search one with search field above.
                 </p>
+                }
             </div>
         }
         </div>

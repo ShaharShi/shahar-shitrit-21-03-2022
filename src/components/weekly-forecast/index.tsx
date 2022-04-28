@@ -6,11 +6,12 @@ import DailyForecastItem from '../daily-forecast-item';
 import styles from './style.module.css'
 
 export default function WeeklyForecast() {
-    const { currentLocation, currentWeeklyForecast, isMetricUnitPreferred } = useSelector((state: IState) => state.weatherState)
+    const { currentLocation, currentWeeklyForecast, isMetricUnitPreferred, updateWeeklyForecast } = useSelector((state: IState) => state.weatherState);
+    const isDarkMode = useSelector((state: IState) => state.themeState.isDarkMode)
     const dispatch = useDispatch()
 
     async function getLocationWeeklyForecast(locationId: string) {
-        if (!locationId) return toast('There are no results for this term, try to search again ... ');
+        if (!locationId) return toast.error('There are no results for this term, try to search again ... ');
         dispatch(changeCurrentWeeklyForecastAction(locationId, isMetricUnitPreferred))
     }
 
@@ -25,7 +26,16 @@ export default function WeeklyForecast() {
                         { currentWeeklyForecast.map((dailyForecast: IDailyForecast, i) => <DailyForecastItem key={i} data={dailyForecast}/> )}
                 </div>
                 :
-                <div className='text-center'> Unavailable to get Weekly Forecast ...</div>
+                <div className='text-center'>
+                    { updateWeeklyForecast ? 
+                        <div className={`spinner-border ${isDarkMode ? 'text-light' : 'text-dark'}`} role="status">
+                            <span className="visually-hidden">Loading...</span>
+                        </div> :
+                        <p>
+                            Unavailable to get Weekly Forecast ...
+                        </p>
+                    }
+                    </div>
             }
         </div>
     )

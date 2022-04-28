@@ -4,13 +4,19 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import WeatherPage from './routes/weather-page';
 import FavoritesPage from './routes/favorites-page';
 import { useSelector } from 'react-redux';
-import { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
+import { useEffect } from 'react';
 
 
 
 function App() {
   const isDarkMode = useSelector((state: IState) => state.themeState.isDarkMode);
+  const weatherErrorMessage = useSelector((state: IState) => state.weatherState.message);
 
+  useEffect(() => {
+    if (!weatherErrorMessage || !weatherErrorMessage.length) return;
+    toast.error(weatherErrorMessage)
+  }, [weatherErrorMessage])
   return (
     <div className={`App ${isDarkMode ? 'background-darker text-light' : 'background-lighter text-dark'}`}>
       <Router>

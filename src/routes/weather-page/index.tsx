@@ -26,11 +26,11 @@ export default function WeatherPage () {
             
         }).catch((err: AxiosError) => {
             console.log(err.message);
-            toast(err.message)
+            toast.error(err.message)
         });
     }
     async function setLocation(partialLocation: IPartialLocation) {
-        if (!partialLocation) return toast('There are no results for this term, try to search again ... ');
+        if (!partialLocation) return toast.error('There are no results for this term, try to search again ... ');
         
         dispatch(changeCurrentLocationAction(partialLocation))
     }
@@ -42,8 +42,8 @@ export default function WeatherPage () {
         async function _success(position: GeolocationPosition) {
             weatherService.fetchLocationByGeoPosition(position.coords.latitude, position.coords.longitude).then((geoPositionResult) => {
                 
-                setLocation(geoPositionResult.data);
-            }).catch((err: AxiosError) => toast(err.message));
+                setLocation({ locationName: geoPositionResult.data.LocalizedName, id: geoPositionResult.data.Key });
+            }).catch((err: AxiosError) => toast.error(err.message));
         }
         async function _failure() {
             setLocation({ locationName: 'Tel Aviv', id: "215854" });
